@@ -4,23 +4,31 @@ class HomeController < ApplicationController
     # USD-BRL
     # EUR-BRL
     # BTC-BRL
+    CURRENCIES = [
+        {code: 'USD-BRL'},
+        {code: 'EUR-BRL'},
+        {code: 'BTC-BRL'}
+    ]
 
     def index
-        @chart_data = ({"2025-01-01" => 2, "2025-01-02" => 3}) 
+        @chart_data = []
+        
 
-        url = URI("https://economia.awesomeapi.com.br/json/daily/USD-BRL/30")
-        response = Net::HTTP.get(url)
+        CURRENCIES.each do |currency|
+            url = URI("https://economia.awesomeapi.com.br/json/daily/#{currency[:code]}/30")
+            response = Net::HTTP.get(url)
 
-        data = JSON.parse(response)
+            data = JSON.parse(response)
 
-        hash = {}
-        data.each do |entry|
-            date = Time.at(entry['timestamp'].to_i).strftime("%d-%m-%Y")
-            rate = entry['high']
+            hash = {}
+            data.each do |entry|
+                date = Time.at(entry['timestamp'].to_i).strftime("%d-%m-%Y")
+                rate = entry['high']
 
-            hash[date] = rate
+                hash[date] = rate
+            end
+
+            @chart_data << {data: hash}
         end
-
-        @chart_data = hash
     end
 end
