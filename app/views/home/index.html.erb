@@ -1,9 +1,1 @@
-<% @chart_data.each do |chart| %>
-    <div>
-        <%= column_chart chart[:data] %>
-    </div>
-<% end %>
-
-<hr>
-
-
+<%= bar_chart @chart_data %>

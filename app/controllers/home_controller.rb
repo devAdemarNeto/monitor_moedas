@@ -15,7 +15,7 @@ class HomeController < ApplicationController
         
 
         CURRENCIES.each do |currency|
-            url = URI("https://economia.awesomeapi.com.br/json/daily/#{currency[:code]}/30")
+            url = URI("https://economia.awesomeapi.com.br/json/daily/#{currency[:code]}/7")
             response = Net::HTTP.get(url)
 
             data = JSON.parse(response)
@@ -28,7 +28,7 @@ class HomeController < ApplicationController
                 hash[date] = rate
             end
 
-            @chart_data << {data: hash}
+            @chart_data << {name: currency[:code], data: hash}
         end
     end
 end
